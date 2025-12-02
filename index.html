@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSFit - Sistema de Gestão para Academias</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .logo-badge {
+            background: white;
+            color: #2563eb;
+            padding: 0.5rem 0.75rem;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        .btn-acesso {
+            background: white;
+            color: #2563eb;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-acesso:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Hero Section */
+        .hero {
+            background:
+                linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+                /* overlay escuro */
+                url('/img/meu-banner.jpg');
+            /* <-- SUA IMAGEM AQUI */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+
+            color: white;
+            padding: 150px 2rem 100px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Remova o ::before antigo */
+        .hero::before {
+            display: none;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 800;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+
+        .btn-primary {
+            background: white;
+            color: #2563eb;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 100px 2rem;
+            background: white;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #1e293b;
+            font-weight: 800;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #64748b;
+            margin-bottom: 4rem;
+        }
+
+        .features-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: #f8fafc;
+            padding: 2rem;
+            border-radius: 16px;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(37, 99, 235, 0.1);
+            border-color: #2563eb;
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #1e293b;
+            font-weight: 700;
+        }
+
+        .feature-card p {
+            color: #64748b;
+            line-height: 1.8;
+        }
+
+        /* Modules Section */
+        .modules {
+            padding: 100px 2rem;
+            background: linear-gradient(180deg, #f8fafc 0%, white 100%);
+        }
+
+        .modules-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .module-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+            border: 2px solid #e2e8f0;
+        }
+
+        .module-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+            border-color: #2563eb;
+        }
+
+        .module-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .module-card h4 {
+            font-size: 1.2rem;
+            color: #1e293b;
+            font-weight: 600;
+        }
+
+        /* Stats Section */
+        .stats {
+            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+            color: white;
+            padding: 80px 2rem;
+        }
+
+        .stats-grid {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-item p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* CTA Section */
+        .cta {
+            padding: 100px 2rem;
+            background: white;
+            text-align: center;
+        }
+
+        .cta-content {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #1e293b;
+            font-weight: 800;
+        }
+
+        .cta p {
+            font-size: 1.2rem;
+            color: #64748b;
+            margin-bottom: 2rem;
+        }
+
+        /* Footer */
+        footer {
+            background: #1e293b;
+            color: white;
+            padding: 3rem 2rem 1rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: #94a3b8;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #334155;
+            color: #94a3b8;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .stats-grid {
+                gap: 2rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">
+                <span class="logo-badge">JS</span>
+                <span>FitGestão</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#inicio">Início</a></li>
+                <li><a href="#funcionalidades">Funcionalidades</a></li>
+                <li><a href="#modulos">Módulos</a></li>
+                <li><a href="#contato">Contato</a></li>
+            </ul>
+            <a href="https://app.jsfity.site" class="btn-acesso">Acessar Sistema</a>
+            <button class="mobile-menu-btn">☰</button>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="inicio">
+        <div class="hero-content">
+
+            <h1>Sistema Completo de Gestão para Academias</h1>
+            <p>Controle total da sua academia em uma plataforma moderna, intuitiva e poderosa</p>
+            <div class="hero-buttons">
+                <a href="https://app.jsfity.site" class="btn-primary">🚀 Acessar Sistema</a>
+                <a href="#funcionalidades" class="btn-secondary">📋 Conhecer Recursos</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="funcionalidades">
+        <h2 class="section-title">Tudo que sua academia precisa</h2>
+        <p class="section-subtitle">Recursos completos para gestão profissional</p>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <span class="feature-icon">👥</span>
+                <h3>Gestão de Pessoas</h3>
+                <p>Cadastro completo de alunos, funcionários, instrutores e visitantes. Controle de documentos, fotos,
+                    dados de contato, histórico completo e integração com controle de acesso por senha, biometria ou
+                    cartão RFID</p>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-icon">💪</span>
+                <h3>Treinos & Avaliações</h3>
+                <p>Biblioteca de exercícios, treinos predefinidos e personalizados por aluno. Avaliações físicas
+                    completas com medidas, dobras cutâneas, IMC automático e questionário PAR-Q enviado por email</p>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-icon">📋</span>
+                <h3>Matrículas Inteligentes</h3>
+                <p>Assistente guiado em 5 etapas para matricular alunos. Escolha de planos, associação a turmas,
+                    configuração de descontos, parcelamento até 12x e geração automática de cobranças mensais</p>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-icon">💰</span>
+                <h3>Financeiro Completo</h3>
+                <p>Gestão de contas a receber e pagar, controle de caixa com abertura/fechamento, múltiplas formas de
+                    pagamento, parcelamento, descontos configuráveis e geração automática de mensalidades</p>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-icon">📊</span>
+                <h3>Relatórios & Analytics</h3>
+                <p>Dashboards financeiros, relatórios de frequência com estatísticas detalhadas, análise de
+                    inadimplência, desempenho operacional e exportação para Excel/CSV</p>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-icon">✅</span>
+                <h3>Controle de Acesso</h3>
+                <p>Registro de frequência por matrícula e senha, integração com catracas e biometria, leitores RFID,
+                    câmeras de segurança, monitor em tempo real e histórico completo de entradas/saídas</p>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-icon">👥</span>
+                <h3>Gestão de Turmas</h3>
+                <p>Organize aulas coletivas por horários, dias da semana e instrutores. Configure múltiplos horários,
+                    vincule planos permitidos, controle de vagas e separação por sexo (masculino, feminino ou misto)</p>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-icon">🔐</span>
+                <h3>Permissões Avançadas</h3>
+                <p>6 perfis predefinidos (Super Admin, Admin, Gerente, Instrutor, Recepcionista, Usuário). Controle
+                    granular por módulo e ação. Permissões especiais para ações críticas como descontos e estornos</p>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-icon">📅</span>
+                <h3>Agenda Integrada</h3>
+                <p>Calendário visual com eventos, aulas especiais, manutenções agendadas, reuniões e avaliações.
+                    Visualização mensal, semanal ou em lista com notificações automáticas</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modules Section -->
+    <section class="modules" id="modulos">
+        <h2 class="section-title">Módulos do Sistema</h2>
+        <p class="section-subtitle">8 categorias organizadas para máxima produtividade</p>
+
+        <div class="modules-grid">
+            <!-- PESSOAS -->
+            <div class="module-card">
+                <div class="module-icon">👤</div>
+                <h4>Alunos</h4>
+                <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">Cadastro completo em 5 abas com foto,
+                    documentos e biometria</p>
+            </div>
+            <div class="module-card">
+                <div class="module-icon">👔</div>
+                <h4>Funcionários</h4>
+                <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">Gestão de equipe com funções e
+                    horários</p>
+            </div>
+            <div class="module-card">
+                <div class="module-icon">🏋️</div>
+                <h4>Instrutores</h4>
+                <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">Personal trainers com especialidades
+                    e turmas</p>
+            </div>
+            <div class="module-card">
+                <div class="module-icon">🚶</div>
+                <h4>Visitantes</h4>
+                <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">Registro de prospects e conversão</p>
+            </div>
+
+            <!-- OPERACIONAL -->
+            <div class="module-card">
+                <div class="module-icon">📋</div>
+                <h4>Matrículas</h4>
+                <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">Assistente guiado em 5 etapas</p>
+            </div>
+            <div class="module-card">
+                <div class="module-icon">👥</div>
+                <h4>Turmas</h4>
+                <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">Aulas coletivas com horários e
+                    instrutores</p>
+            </div>
+            <div class="module-card">
+                <div class="module-icon">✅</div>
+                <h4>Frequência</h4>
+                <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">Registro rápido por matrícula e senha
+                </p>
+            </div>
+            <div class="module-card">
+                <div class="module-icon">📊</div>
+                <h4>Avaliações Físicas</h4>
+                <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">Medidas, dobras, IMC e PAR-Q por
+                    email</p>
+            </div>
+            <div class="module-card">
+                <div class="module-icon">🏋️‍♂️</div>
+                <h4>Equipamentos</h4>
+                <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">Cadastro e controle de aparelhos</p>
+            </div>
+
+            <!-- TREINO -->
+            <div class="module-card">
+                <div class="module-icon">🎯</div>
+                <h4>Objetivos</h4>
+                <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">Metas de treino personalizáveis</p>
+            </div>
+            <div class="module-card">
+                <div class="module-icon">💪</div>
+                <h4>Grupos de Exercícios</h4>
+                <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">Categorias musculares e tipos</p>
+            </div>
+            <div class="module-card">
+                <div class="module-icon">🎯</div>
+                <h4>Exercícios</h4>
+                <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">Biblioteca completa de movimentos</p>
+            </div>
+            <div class="module-card">
+                <div class="module-icon">📝</div>
+                <h4>Treinos Predefinidos</h4>
+                <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">Templates reutilizáveis de treino</p>
+            </div>
+            <div class="module-card">
+                <div class="module-icon">💪</div>
+                <h4>Treinos do Aluno</h4>
+                <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">Prescrição personalizada com validade
+                </p>
+            </div>
+
+            <!-- CADASTROS -->
+            <div class="module-card">
+                <div class="module-icon">💳</div>
+                <h4>Planos</h4>
+                <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">7 periodicidades de mensal a anual
+                </p>
+            </div>
+            <div class="module-card">
+                <div class="module-icon">🏷️</div>
+                <h4>Descontos</h4>
+                <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">Percentual ou valor fixo com validade
+                </p>
+            </div>
+            <div class="module-card">
+                <div class="module-icon">📍</div>
+                <h4>Locais</h4>
+                <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">Salas, quadras e espaços físicos</p>
+            </div>
+            <div class="module-card">
+                <div class="module-icon">💼</div>
+                <h4>Funções</h4>
+                <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">Cargos e responsabilidades</p>
+            </div>
+
+            <!-- FINANCEIRO -->
+            <div class="module-card">
+                <div class="module-icon">📈</div>
+                <h4>Contas a Receber</h4>
+                <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">Mensalidades, matrículas e outras
+                    receitas</p>
+            </div>
+            <div class="module-card">
+                <div class="module-icon">📉</div>
+                <h4>Contas a Pagar</h4>
+                <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">Despesas, fornecedores e categorias
+                </p>
+            </div>
+            <div class="module-card">
+                <div class="module-icon">💰</div>
+                <h4>Controle de Caixa</h4>
+                <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">Abertura, fechamento e movimentações
+                </p>
+            </div>
+
+            <!-- CONTROLE DE ACESSO -->
+            <div class="module-card">
+                <div class="module-icon">🚪</div>
+                <h4>Catracas</h4>
+                <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">Configuração de catracas inteligentes
+                </p>
+            </div>
+            <div class="module-card">
+                <div class="module-icon">👆</div>
+                <h4>Leitores</h4>
+                <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">Biometria e cartões RFID</p>
+            </div>
+            <div class="module-card">
+                <div class="module-icon">📹</div>
+                <h4>Câmeras</h4>
+                <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">Vigilância e streaming em tempo real
+                </p>
+            </div>
+            <div class="module-card">
+                <div class="module-icon">🔢</div>
+                <h4>Teclados</h4>
+                <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">Acesso por senha de 4 dígitos</p>
+            </div>
+            <div class="module-card">
+                <div class="module-icon">📺</div>
+                <h4>Monitor</h4>
+                <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">Dashboard em tempo real de acessos
+                </p>
+            </div>
+
+            <!-- RELATÓRIOS -->
+            <div class="module-card">
+                <div class="module-icon">📊</div>
+                <h4>Relatório de Frequência</h4>
+                <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">% de presença e estatísticas</p>
+            </div>
+            <div class="module-card">
+                <div class="module-icon">💹</div>
+                <h4>Relatório Financeiro</h4>
+                <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">Dashboard com receitas e despesas</p>
+            </div>
+
+            <!-- AGENDA -->
+            <div class="module-card">
+                <div class="module-icon">📅</div>
+                <h4>Agenda</h4>
+                <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">Calendário de eventos e aulas</p>
+            </div>
+
+            <!-- CONFIGURAÇÕES -->
+            <div class="module-card">
+                <div class="module-icon">🏢</div>
+                <h4>Dados da Academia</h4>
+                <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">Informações cadastrais e logo</p>
+            </div>
+            <div class="module-card">
+                <div class="module-icon">👤</div>
+                <h4>Usuários</h4>
+                <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">6 perfis com permissões granulares
+                </p>
+            </div>
+            <div class="module-card">
+                <div class="module-icon">🔑</div>
+                <h4>Licenças</h4>
+                <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">Controle de ativação e validade</p>
+            </div>
+            <div class="module-card">
+                <div class="module-icon">⏳</div>
+                <h4>Solicitações</h4>
+                <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">Aprovar/rejeitar novos cadastros</p>
+            </div>
+            <div class="module-card">
+                <div class="module-icon">⚙️</div>
+                <h4>Sistema</h4>
+                <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">Email, backup e configurações</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h3>33</h3>
+                <p>Módulos Integrados</p>
+            </div>
+            <div class="stat-item">
+                <h3>100+</h3>
+                <p>Funcionalidades Completas</p>
+            </div>
+            <div class="stat-item">
+                <h3>24/7</h3>
+                <p>Disponibilidade Online</p>
+            </div>
+            <div class="stat-item">
+                <h3>6</h3>
+                <p>Perfis de Usuário</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Diferenciais Section -->
+    <section style="padding: 100px 2rem; background: white;">
+        <h2 class="section-title">Diferenciais do JSFit</h2>
+        <p class="section-subtitle">Tecnologia e praticidade para sua academia</p>
+
+        <div
+            style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 3rem;">
+
+            <!-- Assistente de Matrícula -->
+            <div
+                style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); padding: 2rem; border-radius: 16px; border: 2px solid #bae6fd;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">🎯</div>
+                <h3 style="font-size: 1.5rem; color: #0c4a6e; margin-bottom: 1rem; font-weight: 700;">Assistente de
+                    Matrícula Inteligente</h3>
+                <ul style="list-style: none; padding: 0; color: #0369a1; line-height: 1.8;">
+                    <li style="margin-bottom: 0.75rem;">✅ <strong>5 etapas guiadas:</strong> Selecionar aluno → Escolher
+                        plano → Turma → Detalhes → Confirmar</li>
+                    <li style="margin-bottom: 0.75rem;">💳 <strong>Parcelamento:</strong> Até 12x com cálculo automático
+                    </li>
+                    <li style="margin-bottom: 0.75rem;">🏷️ <strong>Descontos:</strong> Percentual ou valor fixo</li>
+                    <li style="margin-bottom: 0.75rem;">💰 <strong>Cobrança automática:</strong> Gera conta a receber na
+                        hora</li>
+                    <li style="margin-bottom: 0.75rem;">📅 <strong>Dia de vencimento:</strong> Escolha de 1 a 28</li>
+                </ul>
+            </div>
+
+            <!-- Controle de Acesso -->
+            <div
+                style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); padding: 2rem; border-radius: 16px; border: 2px solid #fcd34d;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">🚪</div>
+                <h3 style="font-size: 1.5rem; color: #78350f; margin-bottom: 1rem; font-weight: 700;">Controle de Acesso
+                    Total</h3>
+                <ul style="list-style: none; padding: 0; color: #92400e; line-height: 1.8;">
+                    <li style="margin-bottom: 0.75rem;">🔢 <strong>Senha 4 dígitos:</strong> Acesso rápido por teclado
+                    </li>
+                    <li style="margin-bottom: 0.75rem;">💳 <strong>Cartão RFID:</strong> Integração com leitores</li>
+                    <li style="margin-bottom: 0.75rem;">👆 <strong>Biometria:</strong> Impressão digital</li>
+                    <li style="margin-bottom: 0.75rem;">📹 <strong>Câmeras:</strong> Streaming em tempo real</li>
+                    <li style="margin-bottom: 0.75rem;">📊 <strong>Monitor ao vivo:</strong> Dashboard de
+                        entradas/saídas</li>
+                </ul>
+            </div>
+
+            <!-- Avaliações Físicas -->
+            <div
+                style="background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%); padding: 2rem; border-radius: 16px; border: 2px solid #f9a8d4;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">📊</div>
+                <h3 style="font-size: 1.5rem; color: #831843; margin-bottom: 1rem; font-weight: 700;">Avaliações
+                    Completas</h3>
+                <ul style="list-style: none; padding: 0; color: #9f1239; line-height: 1.8;">
+                    <li style="margin-bottom: 0.75rem;">📏 <strong>Medidas:</strong> Peso, altura, % gordura</li>
+                    <li style="margin-bottom: 0.75rem;">📐 <strong>Circunferências:</strong> 10+ pontos corporais</li>
+                    <li style="margin-bottom: 0.75rem;">📊 <strong>Dobras cutâneas:</strong> 7 pontos com adipômetro
+                    </li>
+                    <li style="margin-bottom: 0.75rem;">⚡ <strong>IMC automático:</strong> Calcula massa magra e gorda
+                    </li>
+                    <li style="margin-bottom: 0.75rem;">📧 <strong>PAR-Q por email:</strong> Aluno preenche online</li>
+                </ul>
+            </div>
+
+            <!-- Treinos -->
+            <div
+                style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); padding: 2rem; border-radius: 16px; border: 2px solid #93c5fd;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">💪</div>
+                <h3 style="font-size: 1.5rem; color: #1e3a8a; margin-bottom: 1rem; font-weight: 700;">Sistema de Treinos
+                </h3>
+                <ul style="list-style: none; padding: 0; color: #1e40af; line-height: 1.8;">
+                    <li style="margin-bottom: 0.75rem;">📚 <strong>Biblioteca:</strong> Exercícios por grupo muscular
+                    </li>
+                    <li style="margin-bottom: 0.75rem;">📝 <strong>Predefinidos:</strong> Templates reutilizáveis</li>
+                    <li style="margin-bottom: 0.75rem;">👤 <strong>Personalizados:</strong> Por aluno com validade</li>
+                    <li style="margin-bottom: 0.75rem;">🎯 <strong>Objetivos:</strong> Emagrecimento, hipertrofia, etc.
+                    </li>
+                    <li style="margin-bottom: 0.75rem;">🔗 <strong>Equipamentos:</strong> Vincula aparelhos a exercícios
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Financeiro -->
+            <div
+                style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); padding: 2rem; border-radius: 16px; border: 2px solid #6ee7b7;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">💰</div>
+                <h3 style="font-size: 1.5rem; color: #064e3b; margin-bottom: 1rem; font-weight: 700;">Financeiro
+                    Automatizado</h3>
+                <ul style="list-style: none; padding: 0; color: #065f46; line-height: 1.8;">
+                    <li style="margin-bottom: 0.75rem;">🔄 <strong>Geração automática:</strong> Mensalidades todo dia 1º
+                    </li>
+                    <li style="margin-bottom: 0.75rem;">💳 <strong>Formas de pagamento:</strong> Dinheiro, PIX, cartão,
+                        boleto</li>
+                    <li style="margin-bottom: 0.75rem;">🏷️ <strong>Descontos:</strong> Com validade e controle</li>
+                    <li style="margin-bottom: 0.75rem;">📊 <strong>Relatórios:</strong> Receitas, despesas e saldo</li>
+                    <li style="margin-bottom: 0.75rem;">💵 <strong>Controle de caixa:</strong> Abertura/fechamento
+                        diário</li>
+                </ul>
+            </div>
+
+            <!-- Permissões -->
+            <div
+                style="background: linear-gradient(135deg, #e9d5ff 0%, #d8b4fe 100%); padding: 2rem; border-radius: 16px; border: 2px solid #c084fc;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">🔐</div>
+                <h3 style="font-size: 1.5rem; color: #581c87; margin-bottom: 1rem; font-weight: 700;">Permissões
+                    Avançadas</h3>
+                <ul style="list-style: none; padding: 0; color: #6b21a8; line-height: 1.8;">
+                    <li style="margin-bottom: 0.75rem;">👥 <strong>6 perfis:</strong> Super Admin, Admin, Gerente,
+                        Instrutor, Recepcionista, Usuário</li>
+                    <li style="margin-bottom: 0.75rem;">🎯 <strong>Granular:</strong> Por módulo e ação (criar, editar,
+                        excluir)</li>
+                    <li style="margin-bottom: 0.75rem;">⚡ <strong>Ações especiais:</strong> Descontos altos, estornos,
+                        logs</li>
+                    <li style="margin-bottom: 0.75rem;">🔒 <strong>Segurança:</strong> Cada usuário vê apenas o
+                        permitido</li>
+                </ul>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta" id="contato">
+        <div class="cta-content">
+            <h2>Pronto para modernizar sua academia?</h2>
+            <p>Sistema completo com assistente de matrícula guiado, integração com catracas e biometria, geração
+                automática de mensalidades, relatórios inteligentes e muito mais!</p>
+            <div style="margin: 2rem 0;">
+                <div
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; max-width: 800px; margin: 0 auto 2rem;">
+                    <div style="text-align: center; padding: 1rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">✅</div>
+                        <div style="font-weight: 600; color: #1e293b;">Matrícula em 5 Etapas</div>
+                        <div style="font-size: 0.9rem; color: #64748b;">Assistente guiado completo</div>
+                    </div>
+                    <div style="text-align: center; padding: 1rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🎯</div>
+                        <div style="font-weight: 600; color: #1e293b;">Treinos Personalizados</div>
+                        <div style="font-size: 0.9rem; color: #64748b;">Biblioteca completa</div>
+                    </div>
+                    <div style="text-align: center; padding: 1rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">💰</div>
+                        <div style="font-weight: 600; color: #1e293b;">Financeiro Automático</div>
+                        <div style="font-size: 0.9rem; color: #64748b;">Cobranças mensais</div>
+                    </div>
+                    <div style="text-align: center; padding: 1rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🚪</div>
+                        <div style="font-weight: 600; color: #1e293b;">Controle de Acesso</div>
+                        <div style="font-size: 0.9rem; color: #64748b;">Catracas e biometria</div>
+                    </div>
+                </div>
+            </div>
+            <a href="https://app.jsfity.site" class="btn-primary" style="font-size: 1.2rem; padding: 1.25rem 2.5rem;">🚀
+                Acessar Sistema Agora</a>
+            <p style="margin-top: 1.5rem; font-size: 0.95rem; color: #64748b;">
+                Ou entre como aluno: <a href="https://app.jsfity.site/aluno/login"
+                    style="color: #2563eb; font-weight: 600; text-decoration: none;">Área do Aluno</a>
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>JSFit Gestão</h4>
+                <p>Sistema completo de gestão para academias e centros de treinamento</p>
+            </div>
+            <div class="footer-section">
+                <h4>Acesso Rápido</h4>
+                <a href="https://app.jsfity.site">Sistema de Gestão</a>
+                <a href="https://app.jsfity.site/aluno/login">Área do Aluno</a>
+            </div>
+            <div class="footer-section">
+                <h4>Recursos</h4>
+                <a href="#funcionalidades">Funcionalidades</a>
+                <a href="#modulos">Módulos</a>
+                <a href="https://app.jsfity.site/registro">Criar Conta</a>
+            </div>
+            <div class="footer-section">
+                <h4>Contato</h4>
+                <p>Email: contato@jsfity.site</p>
+                <p>Suporte: suporte@jsfity.site</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 JSFit Gestão. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Header shadow on scroll
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+            } else {
+                header.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+            }
+        });
+    </script>
+</body>
+
+</html>
