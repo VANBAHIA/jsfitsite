@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JSFit - Sistema de Gestão para Academias</title>
+    <title>Global Fit - Sistema de Gestão para Academias</title>
     <style>
         * {
             margin: 0;
@@ -91,65 +91,39 @@
 
         /* Hero Section */
         .hero {
-            background:
-                linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-                /* overlay escuro */
-                url('/img/meu-banner.jpg');
-            /* <-- SUA IMAGEM AQUI */
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-
-            color: white;
-            padding: 150px 2rem 100px;
-            text-align: center;
             position: relative;
-            overflow: hidden;
+            margin-top: 76px;
+            /* espaço pro header fixo não cobrir o banner */
+            line-height: 0;
+            /* remove espaço extra abaixo da imagem inline */
         }
 
-        /* Remova o ::before antigo */
-        .hero::before {
-            display: none;
-        }
-
-        .hero-content {
-            max-width: 800px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1.5rem;
-            font-weight: 800;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .hero p {
-            font-size: 1.3rem;
-            margin-bottom: 2rem;
-            opacity: 0.95;
+        .hero-banner {
+            display: block;
+            width: 100%;
+            height: auto;
         }
 
         .hero-buttons {
             display: flex;
-            gap: 1rem;
-            justify-content: center;
+            gap: 0.75rem;
             flex-wrap: wrap;
+            position: absolute;
+            right: 2rem;
+            bottom: 1.5rem;
+            z-index: 2;
         }
-
 
         .btn-primary {
             background: white;
             color: #2563eb;
-            padding: 1rem 2rem;
-            border-radius: 12px;
+            padding: 1.2rem 1.5rem;
+            border-radius: 10px;
             text-decoration: none;
             font-weight: 700;
-            font-size: 1.1rem;
+            font-size: 0.85rem;
             transition: all 0.3s;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
         }
 
         .btn-primary:hover {
@@ -158,15 +132,16 @@
         }
 
         .btn-secondary {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.35);
             color: white;
-            padding: 1rem 2rem;
-            border-radius: 12px;
+            padding: 1.2rem 1.5rem;
+            border-radius: 10px;
             text-decoration: none;
             font-weight: 700;
-            font-size: 1.1rem;
+            font-size: 0.85rem;
             transition: all 0.3s;
-            border: 2px solid white;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(2px);
         }
 
         .btn-secondary:hover {
@@ -388,12 +363,16 @@
                 display: block;
             }
 
-            .hero h1 {
-                font-size: 2rem;
+            .hero-buttons {
+                right: 1rem;
+                bottom: 1rem;
+                gap: 0.5rem;
             }
 
-            .hero p {
-                font-size: 1rem;
+            .btn-primary,
+            .btn-secondary {
+                padding: 0.5rem 0.9rem;
+                font-size: 0.75rem;
             }
 
             .section-title {
@@ -417,8 +396,8 @@
     <header>
         <nav>
             <div class="logo">
-                <span class="logo-badge">JS</span>
-                <span>FitGestão</span>
+                <span class="logo-badge">GF</span>
+                <span>Global Fit</span>
             </div>
             <ul class="nav-links">
                 <li><a href="#inicio">Início</a></li>
@@ -426,21 +405,17 @@
                 <li><a href="#modulos">Módulos</a></li>
                 <li><a href="#contato">Contato</a></li>
             </ul>
-            <a href="https://app.jsfity.site" class="btn-acesso">Acessar Sistema</a>
+            <a href="https://app.globalrh.digital" class="btn-acesso">Acessar Sistema</a>
             <button class="mobile-menu-btn">☰</button>
         </nav>
     </header>
 
     <!-- Hero Section -->
     <section class="hero" id="inicio">
-        <div class="hero-content">
-
-            <h1>Sistema Completo de Gestão para Academias</h1>
-            <p>Controle total da sua academia em uma plataforma moderna, intuitiva e poderosa</p>
-            <div class="hero-buttons">
-                <a href="https://app.jsfity.site/registro" class="btn-primary"  target="_blank" rel="noopener noreferrer">>🚀 Teste Grátis por 15 dias.</a>
-                <a href="#funcionalidades" class="btn-secondary">📋 Conhecer Recursos</a>
-            </div>
+        <img src="img/bg.png" alt="Global Fit - Sistema de Gestão para Academias" class="hero-banner">
+        <div class="hero-buttons">
+            <a href="https://app.globalrh.digital/registro" class="btn-primary" target="_blank" rel="noopener noreferrer">🚀 Teste Grátis!</a>
+            <a href="#funcionalidades" class="btn-secondary">📋 Conhecer Recursos</a>
         </div>
     </section>
 
@@ -609,8 +584,8 @@
             <div class="module-card">
                 <div class="module-icon">💳</div>
                 <h4>Planos</h4>
-                <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">7 periodicidades de mensal a anual
-                </p>
+                <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">De mensal a anual, com opções
+                    personalizadas por dias ou meses</p>
             </div>
             <div class="module-card">
                 <div class="module-icon">🏷️</div>
@@ -752,7 +727,7 @@
 
     <!-- Diferenciais Section -->
     <section style="padding: 100px 2rem; background: white;">
-        <h2 class="section-title">Diferenciais do JSFit</h2>
+        <h2 class="section-title">Diferenciais do Global Fit</h2>
         <p class="section-subtitle">Tecnologia e praticidade para sua academia</p>
 
         <div
@@ -898,10 +873,10 @@
                     </div>
                 </div>
             </div>
-            <a href="https://app.jsfity.site" class="btn-primary" style="font-size: 1.2rem; padding: 1.25rem 2.5rem;">🚀
+            <a href="https://app.globalrh.digital" class="btn-primary" style="font-size: 1.2rem; padding: 1.25rem 2.5rem;">🚀
                 Acessar Sistema Agora</a>
             <p style="margin-top: 1.5rem; font-size: 0.95rem; color: #64748b;">
-                Ou entre como aluno: <a href="https://app.jsfity.site/aluno/login"
+                Ou entre como aluno: <a href="https://app.globalrh.digital/aluno/login"
                     style="color: #2563eb; font-weight: 600; text-decoration: none;">Área do Aluno</a>
             </p>
         </div>
@@ -911,28 +886,29 @@
     <footer>
         <div class="footer-content">
             <div class="footer-section">
-                <h4>JSFit Gestão</h4>
+                <h4>Global Fit</h4>
                 <p>Sistema completo de gestão para academias e centros de treinamento</p>
             </div>
             <div class="footer-section">
                 <h4>Acesso Rápido</h4>
-                <a href="https://app.jsfity.site">Sistema de Gestão</a>
-                <a href="https://app.jsfity.site/aluno/login">Área do Aluno</a>
+                <a href="https://app.globalrh.digital">Sistema de Gestão</a>
+                <a href="https://app.globalrh.digital/aluno/login">Área do Aluno</a>
             </div>
             <div class="footer-section">
                 <h4>Recursos</h4>
                 <a href="#funcionalidades">Funcionalidades</a>
                 <a href="#modulos">Módulos</a>
-                <a href="https://app.jsfity.site/registro">Criar Conta</a>
+                <a href="https://app.globalrh.digital/registro">Criar Conta</a>
             </div>
             <div class="footer-section">
                 <h4>Contato</h4>
-                <p>Email: contato@jsfity.site</p>
-                <p>Suporte: suporte@jsfity.site</p>
+                <p>Email: jsfitsuporte@gmail.com</p>
+                <p>Suporte: jsfitsuporte@gmail.com</p>
+                <p>WhatsApp: (11) 94074-1372</p>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2024 JSFit Gestão. Todos os direitos reservados.</p>
+            <p>&copy; 2026 Global Fit. Todos os direitos reservados.</p>
         </div>
     </footer>
 
