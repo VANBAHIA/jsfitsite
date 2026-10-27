@@ -67,3 +67,5 @@
 @media(max-width:1000px){.hm-cards{grid-template-columns:1fr}.hm-why-grid,.hm-about-grid{grid-template-columns:1fr}.hm-hero-grid{grid-template-columns:1fr}.hm-about-art{justify-items:start}.hm-script{display:none}}
 @media(max-width:850px){.hm-cta-group{display:none}.hm-mobile-only{display:block}}
 @media(max-width:600px){.hm-panel{grid-template-columns:1fr 1fr}.hm-feat:nth-child(3n){border-right:1px solid var(--line)}.hm-feat:nth-child(2n){border-right:0}.hm-feat:nth-child(n+4){border-bottom:1px solid var(--line)}.hm-feat:nth-child(n+5){border-bottom:0}.hm-card{flex-direction:column}.hm-contact .hm-contact-inner{flex-wrap:wrap}.hm-contact .site-button{margin-left:0}.hm-chat{display:none}}
+
+.hm-contact-actions{display:flex;align-items:center;gap:10px;margin-left:auto;flex-wrap:wrap}.hm-contact-actions .site-button{margin-left:0}.hm-contact .site-button.whatsapp{background:#25d366;border-color:#25d366;color:#fff}.hm-contact .site-button.whatsapp:hover{box-shadow:0 8px 18px #25d36655}
